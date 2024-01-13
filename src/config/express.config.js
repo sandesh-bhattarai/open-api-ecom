@@ -11,16 +11,16 @@ const { ZodError } = require("zod");
 const path = require("path");
 
 const event = require("./event.config");
-const {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLList,
-  GraphQLID,
-  GraphQLFloat,
-} = require("graphql");
-const { graphqlHTTP } = require("express-graphql");
-const categorySvc = require("../app/category/category.service");
+// const {
+//   GraphQLSchema,
+//   GraphQLObjectType,
+//   GraphQLString,
+//   GraphQLList,
+//   GraphQLID,
+//   GraphQLFloat,
+// } = require("graphql");
+// const { graphqlHTTP } = require("express-graphql");
+// const categorySvc = require("../app/category/category.service");
 // const { createHandler } = require("graphql-http/lib/use/express");
 
 // body parser
@@ -40,69 +40,69 @@ app.use(event);
 app.use("/api/v1", router);
 
 // PRODUCT
-const Product = new GraphQLObjectType({
-  name: "Product",
-  fields: {
-    _id: { type: GraphQLID },
-    title: { type: GraphQLString },
-    // description: {type: GraphQLString},
-    status: { type: GraphQLString },
-  },
-});
-const ProductInputType = new GraphQLObjectType({
-  name: "ProductInput",
-  fields: {
-    title: { type: GraphQLString },
-    status: { type: GraphQLString },
-  },
-});
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: "Query",
-    fields: {
-      products: {
-        type: new GraphQLList(Product),
-        resolve: async () => {
-          //
-          // let data = await categorySvc.getData({}, {limit: 10, skipt: 0})
-          return [];
-        },
-      },
-    },
-  }),
-  mutation: new GraphQLObjectType({
-    name: "Mutation",
-    fields: {
-      createProduct: {
-        args: {
-          title: GraphQLString,
-          status: GraphQLString,
-        },
-        type: Product,
-        resolve: ({ title, status }) => {
-          console.log(args);
-          return {
-            _id: "",
-            title: "",
-            status: "",
-          };
-        },
-      },
-    },
-  }),
-});
+// const Product = new GraphQLObjectType({
+//   name: "Product",
+//   fields: {
+//     _id: { type: GraphQLID },
+//     title: { type: GraphQLString },
+//     // description: {type: GraphQLString},
+//     status: { type: GraphQLString },
+//   },
+// });
+// const ProductInputType = new GraphQLObjectType({
+//   name: "ProductInput",
+//   fields: {
+//     title: { type: GraphQLString },
+//     status: { type: GraphQLString },
+//   },
+// });
+// const schema = new GraphQLSchema({
+//   query: new GraphQLObjectType({
+//     name: "Query",
+//     fields: {
+//       products: {
+//         type: new GraphQLList(Product),
+//         resolve: async () => {
+//           //
+//           // let data = await categorySvc.getData({}, {limit: 10, skipt: 0})
+//           return [];
+//         },
+//       },
+//     },
+//   }),
+//   mutation: new GraphQLObjectType({
+//     name: "Mutation",
+//     fields: {
+//       createProduct: {
+//         args: {
+//           title: GraphQLString,
+//           status: GraphQLString,
+//         },
+//         type: Product,
+//         resolve: ({ title, status }) => {
+//           console.log(args);
+//           return {
+//             _id: "",
+//             title: "",
+//             status: "",
+//           };
+//         },
+//       },
+//     },
+//   }),
+// });
 
-// app.all('/api/v1/graphql', createHandler({
+// // app.all('/api/v1/graphql', createHandler({
+// //     schema: schema,
+// // }))
+
+// app.use(
+//   "/api/v1/graphql",
+//   graphqlHTTP({
 //     schema: schema,
-// }))
-
-app.use(
-  "/api/v1/graphql",
-  graphqlHTTP({
-    schema: schema,
-    graphiql: true,
-  }),
-);
+//     graphiql: true,
+//   }),
+// );
 // 404 handle
 app.use((req, res, next) => {
   next({ code: 404, message: "Not found" });
