@@ -150,6 +150,7 @@ class CategoryService{
 
     updateById = async(id, data) =>{
         try {
+            console.log(data)
             const update = await CategoryModel.findByIdAndUpdate(id, {$set: data});
             return update;
         } catch(exception) {
