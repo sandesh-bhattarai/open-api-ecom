@@ -93,58 +93,65 @@ class ProductService{
 
     getBySlugWithProduct = async(filter) => {
         try {
-            const pipeline = [
-                {
-                    $match: {
-                        ...filter
-                    }
-                },
-                {
-                  $lookup: {
-                    from: 'users', 
-                    localField: 'createdBy', 
-                    foreignField: '_id', 
-                    as: 'createdBy'
-                  }
-                }, {
-                  $lookup: {
-                    from: 'categories', 
-                    localField: 'parentId', 
-                    foreignField: '_id', 
-                    as: 'parentId'
-                  }
-                }, {
-                  $unwind: {
-                    path: '$parentId',
-                    preserveNullAndEmptyArrays: true
-                  }
-                }, {
-                  $unwind: {
-                    path: '$createdBy',
-                    preserveNullAndEmptyArrays: true
-                  }
-                }, {
-                  $project: {
-                    _id: '$_id', 
-                    title: '$title', 
-                    description: '$description', 
-                    slug: '$slug', 
-                    status: '$status', 
-                    parentId: '$parentId', 
-                    image: '$image', 
-                    createdAt: '$createdAt', 
-                    updatedAt: '$updatedAt', 
-                    createdBy: {
-                      _id: '$createdBy._id', 
-                      name: '$createdBy.name'
-                    }
-                  }
-                }
-              ]
-            let data = await ProductModel.aggregate(pipeline)
-            // let data = await ProductModel.findOne(filter)
-            //  .populate("parentId", ['_id', "title"])
-            //.populate('cretedBy', ['_id', 'name'])
+            // const pipeline = [
+            //     {
+            //         $match: {
+            //             ...filter
+            //         }
+            //     },
+            //     {
+            //       $lookup: {
+            //         from: 'users', 
+            //         localField: 'createdBy', 
+            //         foreignField: '_id', 
+            //         as: 'createdBy'
+            //       }
+            //     }, {
+            //       $lookup: {
+            //         from: 'categories', 
+            //         localField: 'parentId', 
+            //         foreignField: '_id', 
+            //         as: 'parentId'
+            //       }
+            //     }, {
+            //       $unwind: {
+            //         path: '$parentId',
+            //         preserveNullAndEmptyArrays: true
+            //       }
+            //     }, {
+            //       $unwind: {
+            //         path: '$createdBy',
+            //         preserveNullAndEmptyArrays: true
+            //       }
+            //     }, {
+            //       $project: {
+            //         _id: '$_id', 
+            //         title: '$title', 
+            //         description: '$description', 
+            //         summary: '$summary', 
+            //         price: '$price', 
+            //         discount: '$discount', 
+            //         afterDiscount: '$afterDiscount', 
+            //         slug: '$slug', 
+            //         status: '$status',
+            //         category: '$category', 
+            //         brand: '$brand', 
+            //         images: '$images', 
+            //         createdAt: '$createdAt', 
+            //         updatedAt: '$updatedAt', 
+            //         createdBy: {
+            //           _id: '$createdBy._id', 
+            //           name: '$createdBy.name'
+            //         }
+            //       }
+            //     }
+            //   ]
+            // let data = await ProductModel.aggregate(pipeline)
+            let data = await ProductModel.findOne(filter)
+                .populate("category", ['_id', "title", "slug"])
+                .populate("brand")
+                .populate("seller")
+                .populate('cretedBy', ['_id', 'name'])
             if(!data) {
                 throw {code: 404, message: "Product Does not exists"}
             }

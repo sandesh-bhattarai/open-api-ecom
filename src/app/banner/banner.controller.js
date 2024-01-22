@@ -41,7 +41,7 @@ class BannerController {
 
             filter = {
                 $and: [
-                    {createdBy: req.authUser._id},
+                    // {createdBy: req.authUser._id},
                     {...filter}
                 ]
             }
