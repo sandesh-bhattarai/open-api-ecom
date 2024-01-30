@@ -151,7 +151,7 @@ class ProductService{
                 .populate("category", ['_id', "title", "slug"])
                 .populate("brand")
                 .populate("seller")
-                .populate('cretedBy', ['_id', 'name'])
+                .populate('createdBy', ['_id', 'name'])
             if(!data) {
                 throw {code: 404, message: "Product Does not exists"}
             }

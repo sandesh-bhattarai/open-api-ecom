@@ -123,7 +123,7 @@ class CategoryController {
 
             res.json({
                 result: {
-                    detail,
+                    detail: detail[0],
                     products
                 }, 
                 message: "Category Detail fetched",

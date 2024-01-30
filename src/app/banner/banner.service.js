@@ -41,7 +41,7 @@ class BannerService {
         }
     }
 
-    listAllData = async(filter = {}, paging={offset: 0,limit:15}, options = {sort: {_id: 1}}) => {
+    listAllData = async(filter = {}, paging={offset: 0,limit:15}, options = {sort: {_id: 'DESC'}}) => {
         try {
             // createdBy => id
             let list = await BannerModel.find(filter)
